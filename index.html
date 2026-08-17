@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>A Special Surprise 💕</title>
+    <link rel="stylesheet" href="css/landing.css" />
+  </head>
+  <body>
+    <!-- Background Floating Hearts -->
+    <div id="bgHearts"></div>
+
+    <div class="landing-container">
+      <div class="envelope" id="envelope">
+        <div class="envelope-flap"></div>
+        <div class="envelope-body">
+          <div class="envelope-content">
+            <div class="heart-icon">💌</div>
+            <h1>A Special Message</h1>
+            <p class="sub-text">Something for you... 💕</p>
+            <button class="open-btn" onclick="openEnvelope()">
+              Open It ✨
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hidden content that appears after opening -->
+      <div class="reveal-content" id="revealContent">
+        <div class="sparkle-container">
+          <span class="sparkle">✨</span>
+          <span class="sparkle">🌟</span>
+          <span class="sparkle">✨</span>
+          <span class="sparkle">💫</span>
+          <span class="sparkle">✨</span>
+        </div>
+        
+        <div class="message-card">
+          <div class="floating-hearts">
+            <span>💕</span>
+            <span>💗</span>
+            <span>💖</span>
+            <span>💝</span>
+            <span>💘</span>
+          </div>
+          
+          <h2>hahaha hi 👋</h2>
+          
+          <div class="message-content">
+            <p>
+              I've been thinking of making this one. I haven't been able to code 
+              for the past months pero try lang haha. I hope it will make your 
+              day (or maybe not). IDK if you've ever received something like 
+              this before but yeah... a bit cringey pero hey! hahaha
+            </p>
+          </div>
+          
+          <div class="divider">✦ ✦ ✦</div>
+          
+          <div class="question-box">
+            <p class="question">Ready? Ready na talaga? Sure na? 100%?</p>
+            <div class="button-group">
+              <a href="old_index.html" class="btn-primary">
+                Yes, Show Me! 💕
+              </a>
+              <button class="btn-secondary" id="maybeBtn">
+                Maybe later... 💭
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ============================================
+      // Background Floating Hearts
+      // ============================================
+      function createBackgroundHearts() {
+        const container = document.getElementById('bgHearts');
+        const emojis = ['❤️', '💕', '💗', '💖', '♥️', '💝', '💘'];
+        
+        for (let i = 0; i < 30; i++) {
+          const heart = document.createElement('div');
+          heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+          const size = 15 + Math.random() * 35;
+          const x = Math.random() * window.innerWidth;
+          const y = Math.random() * window.innerHeight;
+          const duration = 10 + Math.random() * 15;
+          const delay = Math.random() * 10;
+          
+          heart.style.cssText = `
+            position: fixed;
+            left: ${x}px;
+            top: ${y}px;
+            font-size: ${size}px;
+            opacity: ${0.08 + Math.random() * 0.12};
+            animation: floatHeartBg ${duration}s ease-in-out infinite;
+            animation-delay: ${delay}s;
+            pointer-events: none;
+            z-index: 0;
+          `;
+          container.appendChild(heart);
+        }
+      }
+
+      // ============================================
+      // Open Envelope with Animation
+      // ============================================
+      function openEnvelope() {
+        const envelope = document.getElementById('envelope');
+        const revealContent = document.getElementById('revealContent');
+        
+        // Add opening animation
+        envelope.classList.add('opened');
+        
+        // Wait for animation then show content
+        setTimeout(() => {
+          envelope.style.display = 'none';
+          revealContent.classList.add('show');
+          
+          // Create celebration hearts
+          createCelebrationHearts();
+        }, 1200);
+      }
+
+      // ============================================
+      // Celebration Hearts on Open
+      // ============================================
+      function createCelebrationHearts() {
+        const emojis = ['❤️', '💕', '💗', '💖', '💝', '💘', '✨', '🌟'];
+        
+        for (let i = 0; i < 50; i++) {
+          setTimeout(() => {
+            const heart = document.createElement('div');
+            heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            const x = Math.random() * window.innerWidth;
+            const size = 20 + Math.random() * 40;
+            
+            heart.style.cssText = `
+              position: fixed;
+              left: ${x}px;
+              top: -50px;
+              font-size: ${size}px;
+              pointer-events: none;
+              z-index: 9999;
+              animation: heartRain ${2 + Math.random() * 3}s linear forwards;
+              animation-delay: ${Math.random() * 0.3}s;
+            `;
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+          }, i * 20);
+        }
+      }
+
+      // ============================================
+      // Maybe Button - Fun Interaction
+      // ============================================
+      document.getElementById('maybeBtn').addEventListener('click', function() {
+        const btn = this;
+        const messages = [
+          'Are you sure? 🤔',
+          'It\'s really sweet though... 💕',
+          'Come on, you know you want to! 😊',
+          'Last chance! 💖',
+          'Okay fine, but you\'re missing out! 😤',
+          'Just click it! 🙈',
+          'Pretty please? 🥺',
+          'I know you want to... 💗'
+        ];
+        
+        let index = 0;
+        const interval = setInterval(() => {
+          btn.textContent = messages[index % messages.length];
+          index++;
+          
+          // Shake the button
+          btn.style.transform = 'scale(0.95)';
+          setTimeout(() => {
+            btn.style.transform = 'scale(1)';
+          }, 100);
+          
+          if (index === messages.length) {
+            clearInterval(interval);
+            btn.textContent = 'Fine, Show Me! 💕';
+            btn.className = 'btn-primary';
+            btn.onclick = function() {
+              window.location.href = 'old_index.html';
+            };
+          }
+        }, 400);
+      });
+
+      // ============================================
+      // Add CSS Animations
+      // ============================================
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes floatHeartBg {
+          0%, 100% {
+            transform: translateY(0) rotate(0deg) scale(1);
+            opacity: 0.08;
+          }
+          50% {
+            transform: translateY(-50px) rotate(10deg) scale(1.2);
+            opacity: 0.2;
+          }
+        }
+        
+        @keyframes heartRain {
+          0% {
+            transform: translateY(0) rotate(0deg) scale(0.5);
+            opacity: 0;
+          }
+          10% {
+            opacity: 1;
+            transform: translateY(20px) rotate(10deg) scale(1);
+          }
+          100% {
+            transform: translateY(110vh) rotate(360deg) scale(1);
+            opacity: 0;
+          }
+        }
+        
+        @keyframes floatHeart {
+          0%, 100% {
+            transform: translateY(0) scale(1);
+          }
+          50% {
+            transform: translateY(-10px) scale(1.1);
+          }
+        }
+      `;
+      document.head.appendChild(style);
+
+      // ============================================
+      // Initialize
+      // ============================================
+      createBackgroundHearts();
+
+      console.log('💕 Welcome to your surprise!');
+      console.log('✨ Click "Open It" to reveal your special message.');
+    </script>
+  </body>
+</html>

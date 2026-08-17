@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Our Special Moments ✨</title>
+    <link rel="stylesheet" href="css/dessert.css" />
+  </head>
+  <body>
+    <div class="floating-container" id="floatingContainer">
+      <!-- Background Floating Hearts -->
+      <div id="bgHearts"></div>
+
+      <!-- Header -->
+      <div class="header-overlay">
+        <h1>HAHAHA naccringe ako sorry!</h1>
+        <div class="controls">
+          <button onclick="toggleFloat()" class="control-btn" id="floatToggle">
+            ⏸️ Pause
+          </button>
+          <button onclick="resetPositions()" class="control-btn">
+            🔄 Reset
+          </button>
+          <span class="memory-counter">✨ <span id="revealedMemories">0</span>/10 Clicked</span>
+        </div>
+      </div>
+
+      <!-- Floating Photos - Full size, no borders -->
+      <div class="floating-card" data-index="0" id="card0">
+        <img src="food/rv1.png" alt="Memory 1" />
+        <div class="hover-glow"></div>
+      </div>
+
+      <div class="floating-card" data-index="1" id="card1">
+        <img src="food/rv2.png" alt="Memory 2" />
+        <div class="hover-glow"></div>
+      </div>
+
+      <div class="floating-card" data-index="2" id="card2">
+        <img src="food/rv3.png" alt="Memory 3" />
+        <div class="hover-glow"></div>
+      </div>
+
+      <div class="floating-card" data-index="3" id="card3">
+        <img src="food/split1.JPG" alt="Memory 4" />
+        <div class="hover-glow"></div>
+      </div>
+
+      <div class="floating-card" data-index="4" id="card4">
+        <img src="food/split2.JPG" alt="Memory 5" />
+        <div class="hover-glow"></div>
+      </div>
+
+      <div class="floating-card" data-index="5" id="card5">
+        <img src="food/wwm1.png" alt="Memory 6" />
+        <div class="hover-glow"></div>
+      </div>
+
+      <div class="floating-card" data-index="6" id="card6">
+        <img src="food/wwm2.png" alt="Memory 7" />
+        <div class="hover-glow"></div>
+      </div>
+
+      <div class="floating-card" data-index="7" id="card7">
+        <img src="food/wwm3.png" alt="Memory 8" />
+        <div class="hover-glow"></div>
+      </div>
+
+      <div class="floating-card" data-index="8" id="card8">
+        <img src="food/vrising1.png" alt="Memory 9" />
+        <div class="hover-glow"></div>
+      </div>
+
+      <div class="floating-card" data-index="9" id="card9">
+        <img src="food/vrising2.png" alt="Memory 10" />
+        <div class="hover-glow"></div>
+      </div>
+
+      <!-- Continue Button -->
+      <div class="continue-wrapper">
+        <a href="lastpage.html" class="next-button">
+          >
+        </a>
+      </div>
+    </div>
+
+    <script>
+      // ============================================
+      // Background Floating Hearts
+      // ============================================
+      function createBackgroundHearts() {
+        const container = document.getElementById('bgHearts');
+        const emojis = ['❤️', '💕', '💗', '💖', '♥️', '💝'];
+        
+        for (let i = 0; i < 25; i++) {
+          const heart = document.createElement('div');
+          heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+          const size = 20 + Math.random() * 40;
+          const x = Math.random() * window.innerWidth;
+          const y = Math.random() * 3000;
+          const duration = 15 + Math.random() * 20;
+          const delay = Math.random() * 10;
+          
+          heart.style.cssText = `
+            position: absolute;
+            left: ${x}px;
+            top: ${y}px;
+            font-size: ${size}px;
+            opacity: ${0.1 + Math.random() * 0.15};
+            animation: floatHeart ${duration}s linear infinite;
+            animation-delay: ${delay}s;
+            pointer-events: none;
+            z-index: 0;
+          `;
+          container.appendChild(heart);
+        }
+      }
+
+      // ============================================
+      // Floating Animation System
+      // ============================================
+      const cards = [];
+      let isFloating = true;
+      let animationId = null;
+      let clickedCount = 0;
+      const totalCards = 10;
+
+      // Get all floating cards
+      document.querySelectorAll('.floating-card').forEach((card, index) => {
+        // Bigger sizes - between 280-450px
+        const cardSize = 280 + Math.random() * 170;
+        
+        // Spread across the page
+        const pageHeight = 3000;
+        const x = 20 + Math.random() * (window.innerWidth - cardSize - 40);
+        const y = 150 + Math.random() * (pageHeight - cardSize - 100);
+        
+        card.style.width = cardSize + 'px';
+        card.style.height = cardSize + 'px';
+        card.style.left = x + 'px';
+        card.style.top = y + 'px';
+        card.style.position = 'absolute';
+        card.style.zIndex = Math.floor(Math.random() * 10) + 1;
+        
+        // Random rotation
+        const rotation = Math.random() * 360;
+        card.style.transform = `rotate(${rotation}deg)`;
+        
+        cards.push({
+          element: card,
+          x: x,
+          y: y,
+          vx: (Math.random() - 0.5) * 2.5,
+          vy: (Math.random() - 0.5) * 2.5,
+          rotation: rotation,
+          rotationSpeed: (Math.random() - 0.5) * 1.5,
+          size: cardSize,
+          isClicked: false,
+          isPaused: false,
+          pageHeight: 3000
+        });
+        
+        // Click handler - pop effect
+        card.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const dataIndex = parseInt(this.dataset.index);
+          const cardData = cards[dataIndex];
+          
+          if (cardData.isClicked) return;
+          
+          cardData.isClicked = true;
+          clickedCount++;
+          document.getElementById('revealedMemories').textContent = clickedCount;
+          
+          // Pop animation
+          this.style.transition = 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.6s ease';
+          this.style.transform = `scale(2.5) rotate(${cardData.rotation + 30}deg)`;
+          this.style.zIndex = '100';
+          this.style.boxShadow = '0 30px 80px rgba(255, 148, 148, 0.5)';
+          
+          // Heart explosion
+          createHeartExplosion(this);
+          
+          // Shrink back
+          setTimeout(() => {
+            this.style.transition = 'transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 1.2s ease';
+            this.style.transform = `scale(1) rotate(${cardData.rotation}deg)`;
+            this.style.zIndex = Math.floor(Math.random() * 10) + 1;
+            this.style.boxShadow = '0 8px 30px rgba(255, 148, 148, 0.25)';
+          }, 900);
+          
+          if (clickedCount === totalCards) {
+            setTimeout(() => {
+              massiveCelebration();
+            }, 600);
+          }
+        });
+        
+        // Hover effect
+        card.addEventListener('mouseenter', function() {
+          if (!this.classList.contains('clicked')) {
+            this.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
+            const currentRotation = cards[parseInt(this.dataset.index)].rotation;
+            this.style.transform = `scale(1.08) rotate(${currentRotation}deg)`;
+            this.style.boxShadow = '0 15px 50px rgba(255, 148, 148, 0.4)';
+          }
+        });
+        
+        card.addEventListener('mouseleave', function() {
+          if (!this.classList.contains('clicked')) {
+            this.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
+            const currentRotation = cards[parseInt(this.dataset.index)].rotation;
+            this.style.transform = `scale(1) rotate(${currentRotation}deg)`;
+            this.style.boxShadow = '0 8px 30px rgba(255, 148, 148, 0.25)';
+          }
+        });
+      });
+
+      // ============================================
+      // Animation Loop
+      // ============================================
+      function animateFloating() {
+        if (!isFloating) {
+          animationId = requestAnimationFrame(animateFloating);
+          return;
+        }
+        
+        const maxHeight = 3000;
+        
+        cards.forEach(cardData => {
+          if (cardData.isPaused || cardData.isClicked) return;
+          
+          cardData.x += cardData.vx;
+          cardData.y += cardData.vy;
+          cardData.rotation += cardData.rotationSpeed;
+          
+          if (cardData.x < 0 || cardData.x + cardData.size > window.innerWidth) {
+            cardData.vx *= -1;
+            cardData.x = Math.max(0, Math.min(cardData.x, window.innerWidth - cardData.size));
+          }
+          if (cardData.y < 140 || cardData.y + cardData.size > maxHeight - 80) {
+            cardData.vy *= -1;
+            cardData.y = Math.max(140, Math.min(cardData.y, maxHeight - cardData.size - 80));
+          }
+          
+          cardData.element.style.left = cardData.x + 'px';
+          cardData.element.style.top = cardData.y + 'px';
+          cardData.element.style.transform = `rotate(${cardData.rotation}deg)`;
+        });
+        
+        animationId = requestAnimationFrame(animateFloating);
+      }
+
+      // ============================================
+      // Heart Explosion on Click
+      // ============================================
+      function createHeartExplosion(card) {
+        const rect = card.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        
+        const emojis = ['❤️', '💕', '💗', '💖', '♥️', '💝', '💘', '✨', '🌟', '💫'];
+        
+        for (let i = 0; i < 40; i++) {
+          const heart = document.createElement('div');
+          const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+          const angle = (Math.PI * 2 * i) / 40 + Math.random() * 0.3;
+          const distance = 80 + Math.random() * 160;
+          const x = Math.cos(angle) * distance;
+          const y = Math.sin(angle) * distance;
+          
+          heart.textContent = emoji;
+          heart.style.cssText = `
+            position: fixed;
+            left: ${centerX}px;
+            top: ${centerY}px;
+            font-size: ${22 + Math.random() * 40}px;
+            pointer-events: none;
+            z-index: 9999;
+            animation: heartExplode 1.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            --tx: ${x}px;
+            --ty: ${y}px;
+          `;
+          document.body.appendChild(heart);
+          setTimeout(() => heart.remove(), 1400);
+        }
+      }
+
+      // ============================================
+      // Massive Celebration
+      // ============================================
+      function massiveCelebration() {
+        const emojis = ['❤️', '💕', '💗', '💖', '♥️', '💝', '💘', '✨', '🌟', '🎉', '🎊', '🎆', '💫'];
+        
+        for (let i = 0; i < 120; i++) {
+          setTimeout(() => {
+            const heart = document.createElement('div');
+            heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            const x = Math.random() * window.innerWidth;
+            heart.style.cssText = `
+              position: fixed;
+              left: ${x}px;
+              top: -50px;
+              font-size: ${25 + Math.random() * 50}px;
+              pointer-events: none;
+              z-index: 9999;
+              animation: heartRain ${2 + Math.random() * 4}s linear forwards;
+              animation-delay: ${Math.random() * 0.5}s;
+            `;
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 6000);
+          }, i * 30);
+        }
+        
+        const counter = document.getElementById('revealedMemories');
+        counter.style.color = '#ff6b6b';
+        counter.style.fontSize = '2em';
+        counter.style.transition = 'all 0.5s ease';
+        
+        const msg = document.createElement('div');
+        msg.textContent = '🎉 All memories clicked! You\'re amazing! 💕';
+        msg.style.cssText = `
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          font-size: 36px;
+          font-family: "Courier", monospace;
+          color: #ff6b6b;
+          background: white;
+          padding: 40px 60px;
+          border-radius: 25px;
+          box-shadow: 0 30px 80px rgba(255,148,148,0.4);
+          z-index: 10000;
+          animation: celebrationPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+          text-align: center;
+          border: 3px solid #ff9494;
+          max-width: 90%;
+        `;
+        document.body.appendChild(msg);
+        setTimeout(() => {
+          msg.style.transition = 'opacity 1s ease';
+          msg.style.opacity = '0';
+          setTimeout(() => msg.remove(), 1000);
+        }, 4500);
+      }
+
+      // ============================================
+      // Controls
+      // ============================================
+      function toggleFloat() {
+        isFloating = !isFloating;
+        const btn = document.getElementById('floatToggle');
+        btn.textContent = isFloating ? '⏸️ Pause' : '▶️ Resume';
+        btn.style.background = isFloating ? 'white' : '#ff9494';
+        btn.style.color = isFloating ? '#ff9494' : 'white';
+      }
+
+      function resetPositions() {
+        const maxHeight = 3000;
+        
+        cards.forEach((cardData, index) => {
+          const cardSize = 280 + Math.random() * 170;
+          const x = 20 + Math.random() * (window.innerWidth - cardSize - 40);
+          const y = 150 + Math.random() * (maxHeight - cardSize - 100);
+          
+          cardData.x = x;
+          cardData.y = y;
+          cardData.vx = (Math.random() - 0.5) * 2.5;
+          cardData.vy = (Math.random() - 0.5) * 2.5;
+          cardData.rotation = Math.random() * 360;
+          cardData.rotationSpeed = (Math.random() - 0.5) * 1.5;
+          cardData.isClicked = false;
+          cardData.isPaused = false;
+          cardData.size = cardSize;
+          
+          cardData.element.style.width = cardSize + 'px';
+          cardData.element.style.height = cardSize + 'px';
+          cardData.element.style.left = x + 'px';
+          cardData.element.style.top = y + 'px';
+          cardData.element.style.transform = `rotate(${cardData.rotation}deg)`;
+          cardData.element.style.transition = 'none';
+          cardData.element.style.zIndex = Math.floor(Math.random() * 10) + 1;
+          cardData.element.style.boxShadow = '0 8px 30px rgba(255, 148, 148, 0.25)';
+        });
+        
+        clickedCount = 0;
+        document.getElementById('revealedMemories').textContent = '0';
+        document.getElementById('revealedMemories').style.color = '';
+        document.getElementById('revealedMemories').style.fontSize = '';
+        
+        if (!isFloating) {
+          isFloating = true;
+          const btn = document.getElementById('floatToggle');
+          btn.textContent = '⏸️ Pause';
+          btn.style.background = 'white';
+          btn.style.color = '#ff9494';
+        }
+      }
+
+      // ============================================
+      // Window Resize
+      // ============================================
+      window.addEventListener('resize', () => {
+        cards.forEach(cardData => {
+          cardData.x = Math.min(cardData.x, window.innerWidth - cardData.size - 20);
+          cardData.x = Math.max(0, cardData.x);
+        });
+      });
+
+      // ============================================
+      // Add CSS Animations
+      // ============================================
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes floatHeart {
+          0% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 0.1;
+          }
+          50% {
+            opacity: 0.25;
+          }
+          100% {
+            transform: translateY(-200px) rotate(20deg);
+            opacity: 0.05;
+          }
+        }
+        
+        @keyframes heartExplode {
+          0% {
+            transform: translate(0, 0) scale(0) rotate(0deg);
+            opacity: 1;
+          }
+          100% {
+            transform: translate(var(--tx), var(--ty)) scale(1.5) rotate(720deg);
+            opacity: 0;
+          }
+        }
+        
+        @keyframes heartRain {
+          0% {
+            transform: translateY(0) rotate(0deg) scale(0.5);
+            opacity: 0;
+          }
+          10% {
+            opacity: 1;
+            transform: translateY(20px) rotate(10deg) scale(1);
+          }
+          100% {
+            transform: translateY(110vh) rotate(360deg) scale(1);
+            opacity: 0;
+          }
+        }
+        
+        @keyframes celebrationPop {
+          0% {
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+          }
+          100% {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+          }
+        }
+      `;
+      document.head.appendChild(style);
+
+      // ============================================
+      // Initialize
+      // ============================================
+      createBackgroundHearts();
+      animateFloating();
+
+      console.log('💕 Welcome to the floating memory gallery!');
+      console.log('🖱️ Click any photo to make it pop with hearts!');
+      console.log('💖 Watch the floating hearts in the background!');
+    </script>
+  </body>
+</html>

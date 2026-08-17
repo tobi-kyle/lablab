@@ -1,0 +1,364 @@
+/* ============================================
+   RESET & BASE
+   ============================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  font-family: "Courier", monospace;
+  background: linear-gradient(135deg, #fff5e4 0%, #ffe8e0 50%, #ffd9d4 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 20px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ============================================
+   BACKGROUND FLOATING HEARTS
+   ============================================ */
+body::before {
+  content: '💕 💗 💖 💝 💘 ❤️ 💕 💗 💖 💝 💘 ❤️ 💕 💗 💖 💝 💘 ❤️ 💕 💗 💖 💝 💘 ❤️';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  font-size: 30px;
+  letter-spacing: 80px;
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  padding: 50px;
+  word-break: break-all;
+  line-height: 100px;
+}
+
+/* ============================================
+   THANK YOU TEXT
+   ============================================ */
+#thankyou {
+  font-size: 48px;
+  color: #ff6b7a;
+  letter-spacing: 4px;
+  margin-bottom: 20px;
+  animation: pulse 2s ease-in-out infinite;
+  z-index: 1;
+  text-shadow: 0 4px 30px rgba(255, 107, 122, 0.2);
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+/* ============================================
+   RIZZ IMAGE
+   ============================================ */
+#rizz {
+  max-width: 400px;
+  width: 100%;
+  height: auto;
+  border-radius: 25px;
+  box-shadow: 0 15px 50px rgba(255, 148, 148, 0.3);
+  margin-bottom: 25px;
+  z-index: 1;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: floatImage 4s ease-in-out infinite;
+}
+
+#rizz:hover {
+  transform: scale(1.03) rotate(-2deg);
+  box-shadow: 0 20px 60px rgba(255, 148, 148, 0.4);
+}
+
+@keyframes floatImage {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* ============================================
+   AUDIO PLAYER
+   ============================================ */
+audio {
+  margin: 15px 0 25px;
+  z-index: 1;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  padding: 5px;
+  box-shadow: 0 4px 20px rgba(255, 148, 148, 0.15);
+}
+
+audio::-webkit-media-controls-panel {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50px;
+}
+
+audio::-webkit-media-controls-play-button {
+  background-color: #ff9494;
+  border-radius: 50%;
+  color: white;
+}
+
+audio::-webkit-media-controls-play-button:hover {
+  background-color: #ff6b7a;
+}
+
+/* ============================================
+   HEADING
+   ============================================ */
+h1 {
+  font-size: 32px;
+  color: #cc7a7a;
+  font-weight: normal;
+  letter-spacing: 3px;
+  margin: 10px 0 25px;
+  z-index: 1;
+  animation: fadeInUp 1s ease forwards;
+}
+
+/* ============================================
+   BUTTON
+   ============================================ */
+.button {
+  padding: 16px 50px;
+  font-size: 20px;
+  font-family: "Courier", monospace;
+  background: linear-gradient(135deg, #ff9494, #ff6b7a);
+  color: #ffffff;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 25px rgba(255, 107, 122, 0.3);
+  letter-spacing: 2px;
+  z-index: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.button:hover::before {
+  left: 100%;
+}
+
+.button:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 40px rgba(255, 107, 122, 0.4);
+  background: linear-gradient(135deg, #ff6b7a, #ff4757);
+}
+
+.button:active {
+  transform: scale(0.95);
+}
+
+/* ============================================
+   FLOATING HEARTS ANIMATION (Additional)
+   ============================================ */
+.floating-heart {
+  position: fixed;
+  font-size: 20px;
+  pointer-events: none;
+  z-index: 999;
+  animation: floatUp 8s linear infinite;
+  opacity: 0.15;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.15;
+  }
+  90% {
+    opacity: 0.15;
+  }
+  100% {
+    transform: translateY(-100px) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+  #thankyou {
+    font-size: 36px;
+  }
+  
+  #rizz {
+    max-width: 320px;
+  }
+  
+  h1 {
+    font-size: 26px;
+  }
+  
+  .button {
+    padding: 14px 40px;
+    font-size: 18px;
+  }
+  
+  audio {
+    max-width: 320px;
+  }
+  
+  body::before {
+    font-size: 20px;
+    letter-spacing: 50px;
+    line-height: 70px;
+    padding: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  #thankyou {
+    font-size: 28px;
+  }
+  
+  #rizz {
+    max-width: 260px;
+    border-radius: 18px;
+  }
+  
+  h1 {
+    font-size: 22px;
+  }
+  
+  .button {
+    padding: 12px 30px;
+    font-size: 16px;
+  }
+  
+  audio {
+    max-width: 260px;
+  }
+  
+  body {
+    padding: 20px 15px;
+  }
+  
+  body::before {
+    font-size: 16px;
+    letter-spacing: 30px;
+    line-height: 50px;
+    padding: 20px;
+  }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #fff5e4;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #ff9494, #ff7b7b);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #ff7b7b, #ff6b6b);
+}
+
+/* ============================================
+   CONFETTI OVERLAY (Optional - for celebrations)
+   ============================================ */
+.confetti-piece {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+  z-index: 9998;
+  animation: confettiFall linear forwards;
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translateY(-10px) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* ============================================
+   GLOW EFFECTS
+   ============================================ */
+.glow {
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 5px rgba(255, 107, 122, 0.2);
+  }
+  to {
+    text-shadow: 0 0 20px rgba(255, 107, 122, 0.5);
+  }
+}

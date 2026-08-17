@@ -1,0 +1,373 @@
+/* ============================================
+   RESET & BASE
+   ============================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #fff5e4 0%, #ffe8e0 50%, #ffd9d4 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: hidden;
+  font-family: "Courier", monospace;
+  position: relative;
+  padding: 20px;
+}
+
+/* Background Hearts */
+#bgHearts {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ============================================
+   FINAL CONTAINER
+   ============================================ */
+.final-container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: fadeInUp 1s ease forwards;
+}
+
+/* ============================================
+   MESSAGE OVERLAY
+   ============================================ */
+.message-overlay {
+  text-align: center;
+  margin-bottom: 20px;
+  animation: fadeInUp 1.2s ease forwards;
+}
+
+.message-overlay h1 {
+  font-size: 42px;
+  color: #ff6b7a;
+  font-weight: normal;
+  letter-spacing: 3px;
+  margin-bottom: 8px;
+  text-shadow: 0 2px 20px rgba(255, 107, 122, 0.2);
+}
+
+.message-overlay .sub-message {
+  font-size: 18px;
+  color: #cc7a7a;
+  letter-spacing: 1px;
+}
+
+/* ============================================
+   THANK YOU TEXT
+   ============================================ */
+#thankyou {
+  text-align: center;
+  font-size: 24px;
+  color: #ff6b7a;
+  margin-bottom: 25px;
+  letter-spacing: 2px;
+  animation: pulse 3s ease-in-out infinite;
+}
+
+/* ============================================
+   FLOWER WRAPPER
+   ============================================ */
+.flower-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin: 10px 0 30px;
+}
+
+/* ============================================
+   FLOWER STYLES (Original)
+   ============================================ */
+.flower {
+  height: 300px;
+  width: 300px;
+  margin: 0 auto;
+  position: relative;
+  transform: scale(0.9);
+}
+
+.flower__glass {
+  width: 20px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 0 0 10px 10px;
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.f-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.f-wrapper--2 {
+  transform: rotate(120deg);
+  transform-origin: 50% 100%;
+}
+
+.f-wrapper--3 {
+  transform: rotate(240deg);
+  transform-origin: 50% 100%;
+}
+
+.flower__line {
+  height: 120px;
+  width: 2px;
+  background: #a8a8a8;
+  border-radius: 2px;
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.f {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  transform-origin: 50% 100%;
+  animation: flower 3s ease-in-out infinite;
+}
+
+@keyframes flower {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+}
+
+.flower__leaf {
+  width: 50px;
+  height: 70px;
+  background: #f7b3b3;
+  border-radius: 50% 50% 50% 0;
+  position: absolute;
+  transform-origin: bottom center;
+  opacity: 0.9;
+  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.flower__leaf--1 {
+  background: #ff6b8a;
+  transform: rotate(0deg) translate(25px, 25px);
+}
+
+.flower__leaf--2 {
+  background: #ff7a96;
+  transform: rotate(30deg) translate(25px, 25px);
+}
+
+.flower__leaf--3 {
+  background: #ff8aa2;
+  transform: rotate(60deg) translate(25px, 25px);
+}
+
+.flower__leaf--4 {
+  background: #ff9aae;
+  transform: rotate(90deg) translate(25px, 25px);
+}
+
+.flower__leaf--5 {
+  background: #ffaaba;
+  transform: rotate(120deg) translate(25px, 25px);
+}
+
+.flower__leaf--6 {
+  background: #ffbac6;
+  transform: rotate(150deg) translate(25px, 25px);
+}
+
+.flower__leaf--7 {
+  background: #ffcad2;
+  transform: rotate(180deg) translate(25px, 25px);
+}
+
+.flower__leaf--8 {
+  background: #ffdade;
+  transform: rotate(210deg) translate(25px, 25px);
+}
+
+/* Falling leaves */
+.flower__fall-down--yellow {
+  animation: flower-fall-down-yellow 2s ease-in-out infinite;
+}
+
+.flower__fall-down--pink {
+  animation: flower-fall-down-pink 2.5s ease-in-out infinite;
+}
+
+.flower__fall-down--purple {
+  animation: flower-fall-down-purple 3s ease-in-out infinite;
+}
+
+@keyframes flower-fall-down-yellow {
+  0%,
+  100% {
+    transform: rotate(210deg) translate(25px, 25px) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: rotate(230deg) translate(35px, 45px) scale(0.8);
+    opacity: 0.5;
+  }
+}
+
+@keyframes flower-fall-down-pink {
+  0%,
+  100% {
+    transform: rotate(210deg) translate(25px, 25px) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: rotate(190deg) translate(15px, 45px) scale(0.8);
+    opacity: 0.5;
+  }
+}
+
+@keyframes flower-fall-down-purple {
+  0%,
+  100% {
+    transform: rotate(210deg) translate(25px, 25px) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: rotate(250deg) translate(45px, 35px) scale(0.8);
+    opacity: 0.5;
+  }
+}
+
+/* ============================================
+   FINAL MESSAGE
+   ============================================ */
+.final-message {
+  text-align: center;
+  padding: 20px 10px;
+  animation: fadeInUp 1.5s ease forwards;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.heart-divider {
+  color: #ff9494;
+  font-size: 16px;
+  letter-spacing: 5px;
+  margin: 15px 0;
+}
+
+.closing-message {
+  font-size: 17px;
+  line-height: 1.8;
+  color: #5a4a4a;
+  margin: 12px 0;
+  text-align: center;
+}
+
+.final-emoji {
+  font-size: 32px;
+  letter-spacing: 10px;
+  margin-top: 15px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+  .flower {
+    transform: scale(0.7);
+  }
+  
+  .message-overlay h1 {
+    font-size: 32px;
+  }
+  
+  .message-overlay .sub-message {
+    font-size: 16px;
+  }
+  
+  #thankyou {
+    font-size: 20px;
+  }
+  
+  .closing-message {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .flower {
+    transform: scale(0.55);
+    margin: -30px auto;
+  }
+  
+  .flower-wrapper {
+    margin: -20px 0 10px;
+  }
+  
+  .message-overlay h1 {
+    font-size: 28px;
+  }
+  
+  .message-overlay .sub-message {
+    font-size: 14px;
+  }
+  
+  #thankyou {
+    font-size: 18px;
+  }
+  
+  .closing-message {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  
+  .final-emoji {
+    font-size: 24px;
+  }
+  
+  .heart-divider {
+    font-size: 13px;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #fff5e4;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #ff9494, #ff7b7b);
+  border-radius: 10px;
+}
